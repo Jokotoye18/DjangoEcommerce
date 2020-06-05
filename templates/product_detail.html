@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<main class="mt-5 pt-4">
+  <div class="container dark-grey-text mt-5">
+    <div class="row wow fadeIn">
+      <div class="col-md-6 mb-4">
+        <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/14.jpg" class="img-fluid" alt="">
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="p-4">
+          <div class="mb-3">
+            <a href="">
+              <span class="badge purple mr-1">{{ item.category}}</span>
+            </a>
+            <a href="">
+              <span class="badge blue mr-1">New</span>
+            </a>
+            <a href="">
+              <span class="badge red mr-1">Bestseller</span>
+            </a>
+          </div>
+
+          {% if item.discount_price %}
+          <p class="lead">
+            <span class="mr-1"><del>${{ item.price }}</del></span>
+            <span>${{ item.discount_price }}</span>
+          </p>
+          {% else %}
+          <p class="lead">
+            <span class="mr-1">${{ item.price|upper }}</span>
+          </p>
+          {% endif %}
+          <p class="lead font-weight-bold">Description</p>
+          <p>{{ item.description }}</p>
+
+          <div>
+            <a class="btn btn-primary" href="{% url 'core:add_to_cart' item.slug %}"><i class="fas fa-shopping-cart mr-2"></i>Add to cart</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

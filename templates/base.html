@@ -1,0 +1,118 @@
+{% load static %}
+{% load cart_template_tags %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>DJecommerce</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/css/mdb.min.css" rel="stylesheet">
+    <style type="text/css">
+        html,
+        body,
+        header,
+        .carousel {
+          height: 60vh;
+        }
+    
+        @media (max-width: 740px) {
+            html,
+            body,
+            header,
+            .carousel {
+                height: 100vh;
+            }
+        }
+    
+        @media (min-width: 800px) and (max-width: 850px) {
+            html,
+            body,
+            header,
+            .carousel {
+                height: 100vh;
+            }
+        }
+        .country-select-flag{
+            display: none;
+        }
+      </style>
+</head>
+<body>
+    {% include 'messages.html' %}
+    <nav class="navbar sticky-top navbar-expand-md navbar-light white scrolling-navbar">
+        <div class="container">
+            <a class="navbar-brand waves-effect" href="{% url 'core:products' %}">
+            <strong class="blue-text">Djcommerce</strong>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    
+                </ul>
+
+                {% if request.user.is_authenticated %}
+                <ul class="navbar-nav nav-flex-icons">
+                    <li class="nav-item">
+                        <a href="{% url 'core:order_summary' %}" class="nav-link waves-effect">
+                            <span class="badge red z-depth-1 mr-1">{{ request.user|cart_item_count }} </span>
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+                        </a>
+                    </li>
+                    <li class="nav-item waves-effect">
+                        <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
+                    </li>
+                </ul>
+                {% else %}
+                <ul class="navbar-nav nav-flex-icons">
+                    <li class="nav-item">
+                        <a class="nav-link"  href="{% url 'account_signup' %}">Sign up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_login' %}">Login</a>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+      
+    {% block content %}
+    {% endblock %}
+
+    <footer class="page-footer text-center font-small mt-4 wow fadeIn">
+        <hr class="my-4">
+        <div class="footer-copyright py-3">
+            © 2019 Copyright:
+            <a href=""> MDBootstrap.com </a>
+        </div>    
+    </footer>
+    
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.0/js/mdb.min.js"></script>
+    <script type="text/javascript">
+        new WOW().init();
+    </script>
+</body>
+</html>
