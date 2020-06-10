@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    
+    #django-paypal
+    'paypal.standard.ipn', 
 
     #django-allauth
     'allauth',
@@ -154,3 +157,8 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+
+#Paypal config
+PAYPAL_RECEIVER_EMAIL = 'jokotoyeademola95@gmail.com' 
+PAYPAL_TEST = True 

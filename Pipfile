@@ -10,6 +10,7 @@ django = "*"
 django-allauth = "*"
 django-countries = "*"
 django-crispy-forms = "*"
+django-paypal = "*"
 
 [requires]
 python_version = "3.8"

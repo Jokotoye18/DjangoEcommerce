@@ -5,6 +5,7 @@ from django.template.defaultfilters import slugify
 from django_countries.fields import CountryField
 
 from django.contrib.auth import get_user_model
+from django.contrib.sessions.models import Session 
 
 ITEM_CATEGORY = (
         ('Short wear', 'Short wear'),
@@ -12,12 +13,19 @@ ITEM_CATEGORY = (
         ('Long wear', 'Long wear')
     )
 
+LABEL_CATEGORY = (
+        ('P', 'primary'),
+        ('S', 'secondary'),
+        ('D', 'danger')
+    )
+
 
 
 class Item(models.Model):
     name = models.CharField(max_length=100, unique=True)
     price = models.FloatField()
-    category = models.CharField(max_length=30, choices=ITEM_CATEGORY)
+    item_category = models.CharField(max_length=30, choices=ITEM_CATEGORY)
+    label = models.CharField(max_length=1, choices=LABEL_CATEGORY, default='P')
     description = models.CharField(max_length=250, help_text='250 words max')
     discount_price = models.FloatField( blank=True, null=True)
     slug = models.SlugField(blank=True)
@@ -31,6 +39,7 @@ class Item(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
+
 
 class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
@@ -59,7 +68,8 @@ class OrderItem(models.Model):
 
 
 class BillingAddress(models.Model):
-    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50, verbose_name='First Name')
+    last_name = models.CharField(max_length=50, verbose_name='Last Name')
     street_address = models.CharField(max_length=150)
     apartment_address = models.CharField(max_length=100, blank=True)
     country = CountryField(blank_label='(select country)')
@@ -67,11 +77,13 @@ class BillingAddress(models.Model):
     
 
     def __str__(self):
-        return self.owner.username
+        return f'{self.first_name} {self.last_name}'
     
 
 class Order(models.Model):
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50, verbose_name='First Name')
+    last_name = models.CharField(max_length=50, verbose_name='Last Name')
     items = models.ManyToManyField(OrderItem)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
@@ -80,8 +92,8 @@ class Order(models.Model):
     
 
     def __str__(self):
-        return f'{self.owner.username} order'
-
+        return f'{self.first_name} {self.last_name}'
+        
     def get_total(self):
         total = 0
         for order_item in self.items.all():

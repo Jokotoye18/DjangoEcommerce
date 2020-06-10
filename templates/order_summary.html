@@ -53,8 +53,13 @@
                 </tr>
                 <tr>
                     <td colspan="5">
+                        {% if not order_list %}
+                        <a class="btn btn-primary rounded float-right mr-2" href="{% url 'core:products' %}">Continue Shopping</a>
+                        {% else %}
                         <a class="btn btn-dark rounded float-right" href="{% url 'core:billing_address' %}">Proceed to Checkout</a>
                         <a class="btn btn-primary rounded float-right mr-2" href="{% url 'core:products' %}">Continue Shopping</a>
+                        {% endif %}
+                       
                     </td>
                 </tr>
               </tbody>

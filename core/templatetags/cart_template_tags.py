@@ -1,5 +1,7 @@
 from django import template
 from core.models import Order
+from django.contrib.sessions.models import Session 
+
 
 register = template.Library()
 

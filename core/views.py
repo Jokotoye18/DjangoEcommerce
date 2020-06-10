@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Item, Order, OrderItem
+from django.conf import settings
+from django.contrib.sessions.models import Session 
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
 from .forms import BillingAddressForm
 from.models import BillingAddress
+from paypal.standard.forms import PayPalPaymentsForm
 from django.contrib.auth import get_user_model
 from django.views.generic import ListView, DetailView, View
 
@@ -52,12 +55,24 @@ class BillingAddress(View):
             order.billing_address = billing_address
             order.save()
             messages.success(request, 'Address received')
-            return redirect('core:billing_address')
+            return redirect('core:payment')
         messages.warning(request, 'The form is invalid!')
         return redirect('core:billing_address')
 
         
-    
+class PaymentView(View):
+    def get(self, request, *args, **kwargs):
+        host = request.get_host()
+        form = PayPalPaymentsForm()
+        context = {"form":form}
+        return render(request, 'payment.html', context) 
+
+    def post(self, request, *args, **kwargs):
+        order = get_object_or_404(Order, owner=request.user, is_ordered=False)
+        paypal_dict = {
+            'business': settings.PAYPAL_RECEIVER_EMAIL,        
+            'amount': order.get_total()
+        }
 
 @login_required
 def add_to_cart(request, slug):
